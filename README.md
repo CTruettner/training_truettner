@@ -9,7 +9,7 @@ coursework for ADC reproducible course
 3 - clone repository link
 4 - new collaborator pulls
 5 - collaborator contributes
-6 - stage file to share
-7 - commit (collaborator writes message)
+6 - collaborator stage file to share
+7 - collaborator commit (collaborator writes message)
 8 - collaborator push
 9 - owner pulls
