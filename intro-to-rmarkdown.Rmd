@@ -1,0 +1,34 @@
+---
+title: "Intro to RMarkdown"
+output: html_document
+date: "2023-02-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# BOREAL TREES ARE BURNING.. **UH OH!**
+
+## **TREE SPECIES**
+
+|    Scientific Name    |   Common Name   | Species Code |
+|:---------------------:|:---------------:|:------------:|
+|    *Picea mariana*    |  Black Spruce   |     PIMA     |
+|    *Picea glauca*     |  White Spruce   |     PIGL     |
+| *Betula neoalaskana*  |  Alaska Birch   |     BENE     |
+| *Populus tremuloides* | Trembling Aspen |     POTR     |
+| *Populus balsamifera* |  Balsam Poplar  |     POBA     |
+
+
+```{r}
+
+x <- 4*3
+
+y = 1*48
+
+z = 5/2
+
+
+```
+
