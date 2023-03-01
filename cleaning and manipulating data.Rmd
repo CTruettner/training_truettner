@@ -1,0 +1,163 @@
+---
+title: "Data Manipulation and Cleaning"
+author: "Charles Truettner"
+date: "2023-03-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Libraries
+
+```{r}
+
+library(dplyr)
+library(tidyr)
+library(readr)
+
+```
+
+## Load our data
+
+```{r}
+
+catch_original <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", method = "libcurl"))
+
+```
+
+## Clean data
+
+```{r}
+
+catch_data <- catch_original %>%
+  select(-All, -notesRegCode)
+
+head(catch_data)
+
+glimpse(catch_data)
+
+```
+
+```{r}
+
+catch_clean <- catch_data %>% 
+  mutate(Chinook = as.numeric(Chinook))
+
+# search for na value
+
+i <- which(is.na(catch_clean$Chinook))
+i
+
+catch_data[i,]
+
+catch_clean <- catch_data %>% 
+  mutate(Chinook = if_else(Chinook == "I", "1", Chinook)) %>% 
+  mutate(Chinook = as.integer(Chinook))
+
+glimpse(catch_clean)
+
+```
+
+```{r}
+
+# pivot longer practice
+
+catch_long <- catch_clean %>% 
+  pivot_longer(cols = -c(Region, Year), names_to = "species", values_to = "catch")
+
+View(catch_long)
+```
+
+```{r}
+
+#pivot wider practice
+
+catch_wide <- catch_long %>% 
+  pivot_wider(names_from = species, values_from = catch)
+
+```
+
+```{r}
+
+catch_long <- catch_long %>% 
+  rename(catch_thousands = catch)
+
+```
+
+```{r}
+## Add columns with mutuate function
+
+catch_long <- catch_long %>% 
+  mutate(catch = catch_thousands *1000)
+
+head(catch_long)
+
+# remove catch_thousands
+
+catch_long <- catch_long %>% 
+  mutate(catch = catch_thousands*1000) %>% 
+  select(-catch_thousands)
+
+head(catch_long)
+
+```
+
+## Practice using group_by and summarise
+```{r}
+
+mean_region <- catch_long %>% 
+  group_by(Region) %>% 
+  summarise(catch_mean = mean(catch))
+
+head(mean_region)
+
+#summarize count region
+
+n_region <- catch_long %>% 
+  group_by(Region) %>% 
+  summarise(n = n())
+
+head(n_region)
+
+```
+
+```{r}
+ALU_catch <- catch_long %>% 
+  filter(Region == c("ALU", "SEE"))
+
+
+```
+
+```{r}
+#arrange rows by default smallest to largest
+mean_region_arrange <- catch_long %>% 
+  group_by(Region) %>% 
+  summarise(mean_catch = mean(catch)) %>% 
+  arrange(-mean_catch)
+
+head(mean_region_arrange)
+
+#arrange is descending with - before column
+
+```
+
+```{r}
+
+catch_joined <- left_join(catch_long, region_defs, by = c("Region" = "code"))
+
+```
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
